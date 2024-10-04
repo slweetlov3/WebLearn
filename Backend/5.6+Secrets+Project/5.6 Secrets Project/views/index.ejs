@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke Generator</title>
+</head>
+<body>
+    <h1>Get a Personalized Joke</h1>
+    <form action="/get-joke" method="post">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Get Joke</button>
+    </form>
+    <div id="joke"></div>
+    <script>
+        document.querySelector('form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const name = document.querySelector('#name').value;
+            const response = await fetch('/get-joke', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `name=${name}`
+            });
+            const joke = await response.text();
+            document.querySelector('#joke').innerText = joke;
+        });
+    </script>
+</body>
+</html>
