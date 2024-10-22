@@ -60,7 +60,7 @@ app.get("/secrets", async (req, res) => {
   if (req.isAuthenticated()) {
     //TODO: Update this to pull in the user's secret to render in secrets.ejs
     try {
-      const result = await db.query("SELECT secrets FROM users WHERE email = $1", [req.user['email']]);
+      const result = await db.query("SELECT secrets FROM users WHERE email = $1", [req.user.email]);
       if (result.rows.length > 0) 
       {
         const secret = result.rows[0].secrets;
@@ -88,7 +88,11 @@ app.get("/auth/google/submit", passport.authenticate("google", {
 
 app.get("/submit", (req,res) => {
   console.log(req.user);
+  if(req.isAuthenticated) {
   res.render("submit.ejs");
+  } else {
+    res.redirect("/login");
+  }
   
 });
 
